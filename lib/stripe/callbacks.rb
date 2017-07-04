@@ -46,11 +46,58 @@ module Stripe
     callback 'transfer.failed'
     callback 'ping'
     callback 'stripe.event'
+    callback 'connect.account.updated'
+    callback 'connect.account.application.deauthorized'
+    callback 'connect.balance.available'
+    callback 'connect.charge.succeeded'
+    callback 'connect.charge.failed'
+    callback 'connect.charge.refunded'
+    callback 'connect.charge.captured'
+    callback 'connect.charge.dispute.created'
+    callback 'connect.charge.dispute.updated'
+    callback 'connect.charge.dispute.closed'
+    callback 'connect.customer.created'
+    callback 'connect.customer.updated'
+    callback 'connect.customer.deleted'
+    callback 'connect.customer.card.created'
+    callback 'connect.customer.card.updated'
+    callback 'connect.customer.card.deleted'
+    callback 'connect.customer.subscription.created'
+    callback 'connect.customer.subscription.updated'
+    callback 'connect.customer.subscription.deleted'
+    callback 'connect.customer.subscription.trial_will_end'
+    callback 'connect.customer.discount.created'
+    callback 'connect.customer.discount.updated'
+    callback 'connect.customer.discount.deleted'
+    callback 'connect.invoice.created'
+    callback 'connect.invoice.updated'
+    callback 'connect.invoice.payment_succeeded'
+    callback 'connect.invoice.payment_failed'
+    callback 'connect.invoiceitem.created'
+    callback 'connect.invoiceitem.updated'
+    callback 'connect.invoiceitem.deleted'
+    callback 'connect.plan.created'
+    callback 'connect.plan.updated'
+    callback 'connect.plan.deleted'
+    callback 'connect.coupon.created'
+    callback 'connect.coupon.updated'
+    callback 'connect.coupon.deleted'
+    callback 'connect.transfer.created'
+    callback 'connect.transfer.updated'
+    callback 'connect.transfer.paid'
+    callback 'connect.transfer.failed'
+    callback 'connect.ping'
+    callback 'connect.stripe.event'
 
     class << self
       def run_callbacks(evt, target)
-        _run_callbacks evt.type, evt, target
-        _run_callbacks 'stripe.event', evt, target
+        if evt.user_id.nil?
+          _run_callbacks evt.type, evt, target
+          _run_callbacks 'stripe.event', evt, target
+        else 
+          _run_callbacks "connect.#{evt.type}", evt, target
+          _run_callbacks 'stripe.event', evt, target
+        end
       end
 
       def _run_callbacks(type, evt, target)
