@@ -90,8 +90,8 @@ module Stripe
     callback 'connect.stripe.event'
 
     class << self
-      def run_callbacks(evt, target)
-        if evt.user_id.nil?
+      def run_callbacks(evt, target, user_id)
+        if user_id.nil?
           _run_callbacks evt.type, evt, target
           _run_callbacks 'stripe.event', evt, target
         else 

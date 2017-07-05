@@ -4,7 +4,7 @@ module Stripe
     def dispatch_stripe_event(params)
       retrieve_stripe_event(params) do |evt|
         target = evt.data.object
-        ::Stripe::Callbacks.run_callbacks(evt, target)
+        ::Stripe::Callbacks.run_callbacks(evt, target, params['user_id'])
       end
     end
 
