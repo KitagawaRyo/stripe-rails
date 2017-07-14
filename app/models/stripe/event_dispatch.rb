@@ -4,7 +4,7 @@ module Stripe
     def dispatch_stripe_event(params)
       retrieve_stripe_event(params) do |evt|
         target = evt.data.object
-        ::Stripe::Callbacks.run_callbacks(evt, target, params['user_id'])
+        ::Stripe::Callbacks.run_callbacks(evt, target)
       end
     end
 
@@ -16,7 +16,9 @@ module Stripe
       elsif user_id.nil?
         yield Stripe::Event.retrieve(id)
       else 
-        yield Stripe::Event.retrieve(id, {stripe_account: user_id})
+        event = Stripe::Event.retrieve(id, {stripe_account: user_id})
+        event.user_id = user_id
+        yield event
       end
     end
   end
