@@ -3,7 +3,7 @@ module Stripe
   module EventDispatch
     def dispatch_stripe_event(params)
       retrieve_stripe_event(params) do |evt|
-        if evt.respond_to(:data) && evt.data.respond_to(:object)
+        if evt.respond_to?(:data) && evt.data.respond_to?(:object)
           target = evt.data.object
           ::Stripe::Callbacks.run_callbacks(evt, target)
         else
