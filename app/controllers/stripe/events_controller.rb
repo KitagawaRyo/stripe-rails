@@ -4,7 +4,8 @@ module Stripe
     respond_to :json
 
     def create
-      @event = dispatch_stripe_event params
+      json = JSON.parse(request.body.read)
+      @event = dispatch_stripe_event(params, json)
       respond_with @event, :location => nil
     end
   end
