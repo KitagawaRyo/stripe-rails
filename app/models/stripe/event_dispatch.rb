@@ -18,7 +18,7 @@ module Stripe
       account = params['account']
       if id == 'evt_00000000000000' #this is a webhook test
         yield Stripe::Event.construct_from(json)
-      elsif .nil?
+      elsif account.nil?
         yield Stripe::Event.retrieve(id)
       else 
         event = Stripe::Event.retrieve(id, {stripe_account: account})
