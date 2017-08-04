@@ -91,7 +91,7 @@ module Stripe
 
     class << self
       def run_callbacks(evt, target)
-        if !evt.respond_to?(:user_id)
+        if !evt.respond_to?(:account)
           _run_callbacks evt.type, evt, target
           _run_callbacks 'stripe.event', evt, target
         else 

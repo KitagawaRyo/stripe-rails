@@ -15,14 +15,14 @@ module Stripe
 
     def retrieve_stripe_event(params, json)
       id = params['id']
-      user_id = params['user_id']
+      account = params['account']
       if id == 'evt_00000000000000' #this is a webhook test
         yield Stripe::Event.construct_from(json)
-      elsif user_id.nil?
+      elsif .nil?
         yield Stripe::Event.retrieve(id)
       else 
-        event = Stripe::Event.retrieve(id, {stripe_account: user_id})
-        event.user_id = user_id
+        event = Stripe::Event.retrieve(id, {stripe_account: account})
+        event.account = account
         yield event
       end
     end
