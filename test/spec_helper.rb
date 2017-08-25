@@ -1,5 +1,9 @@
 require "simplecov"
-SimpleCov.start
+SimpleCov.start do
+  add_filter "/test/"
+end
+
+require 'minitest/autorun'
 
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
@@ -20,3 +24,5 @@ end
 
 Stripe::Engine.testing = true
 require 'mocha/setup'
+
+require 'irb'

@@ -1,4 +1,3 @@
-require 'minitest/autorun'
 require 'spec_helper'
 
 describe 'building plans' do
@@ -30,6 +29,16 @@ describe 'building plans' do
     it 'is accessible via hash lookup (symbol/string agnostic)' do
       Stripe::Plans[:primo].must_equal Stripe::Plans::PRIMO
       Stripe::Plans['primo'].must_equal Stripe::Plans::PRIMO
+    end
+
+    it 'accepts a billing interval of a day' do
+      Stripe.plan :daily do |plan|
+        plan.name = 'Acme as a service daily'
+        plan.amount = 100
+        plan.interval = 'day'
+      end
+
+      Stripe::Plans::DAILY.wont_be_nil
     end
 
     it 'accepts a billing interval of a week' do
